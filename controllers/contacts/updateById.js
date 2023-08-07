@@ -1,7 +1,7 @@
 const contactsOperations = require("../../models");
 const { NotFound } = require("http-errors");
 
-const updateBtId = async (req, res) => {
+const updateById = async (req, res) => {
   const { contactId } = req.params;
   const result = await contactsOperations.updateById(contactId, req.body);
   if (!result) {
@@ -14,4 +14,4 @@ const updateBtId = async (req, res) => {
   });
 };
 
-module.exports = updateBtId;
+module.exports = updateById;
