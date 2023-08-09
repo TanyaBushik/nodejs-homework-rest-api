@@ -1,6 +1,6 @@
 const contacts = require("../models/contacts");
 const { NotFound } = require("http-errors");
-const { ctrlWrapper } = require("../middleware");
+const { ctrlWrapper } = require("../middleware/");
 
 const add = async (req, res) => {
   const result = await contacts.addContact(req.body);
