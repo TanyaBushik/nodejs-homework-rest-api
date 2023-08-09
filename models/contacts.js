@@ -16,10 +16,10 @@ const getContactsList = async () => {
 const updateContacts = async (contacts) =>
   await fs.writeFile(filePath, JSON.stringify(contacts, null, 2));
 
-const addContact = async (data) => {
+const addContact = async (body) => {
   try {
     const contacts = await getContactsList();
-    const newContact = { id: nanoid(), ...data };
+    const newContact = { id: nanoid(), ...body };
     contacts.push(newContact);
     await updateContacts(contacts);
     return newContact;
