@@ -1,6 +1,6 @@
 const express = require("express");
 
-const validation = require("../../middleware/validation");
+const { isValidId } = require("../../middleware/isValidId");
 const { addSchema, updateSchema } = require("../../schemas/contactsSchema");
 const ctrl = require("../../controllers/contacts");
 
@@ -10,10 +10,10 @@ router.get("/", ctrl.getList);
 
 router.get("/:id", ctrl.getById);
 
-router.post("/", validation(addSchema), ctrl.add);
+router.post("/", isValidId(addSchema), ctrl.add);
 
 router.delete("/:id", ctrl.removeById);
 
-router.put("/:id", validation(updateSchema), ctrl.updateById);
+router.put("/:id", isValidId(updateSchema), ctrl.updateById);
 
 module.exports = router;

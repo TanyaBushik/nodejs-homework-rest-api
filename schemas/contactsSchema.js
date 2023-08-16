@@ -4,27 +4,19 @@ const addSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().required(),
   phone: Joi.string().required(),
+  favourite: Joi.boolean(),
 });
 const updateSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string(),
   phone: Joi.string(),
 });
+const updateFavouriteSchema = Joi.object({
+  favourite: Joi.boolean().required(),
+});
 
 module.exports = {
   addSchema,
   updateSchema,
+  updateFavouriteSchema,
 };
-
-// const contactsSchema = Joi.object({
-//   name: Joi.string().required(),
-//   email: Joi.string().email().lowercase().required(),
-//   phone: Joi.string()
-//     .length(14)
-//     .pattern(
-//       /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/
-//     )
-//     .required(),
-// });
-
-// module.exports = contactsSchema;

@@ -1,76 +1,29 @@
-const fs = require("fs/promises");
-const path = require("path");
-const { nanoid } = require("nanoid");
+const { Schema, model } = require("mongoose");
 
-const filePath = path.join(__dirname, "contacts.json");
+const { handleMongooseError } = require("../helpers");
 
-const getContactsList = async () => {
-  try {
-    const data = await fs.readFile(filePath);
-    return JSON.parse(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
+const contactSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { versionKey: false, timestamps: true }
+);
 
-const updateContacts = async (contacts) =>
-  await fs.writeFile(filePath, JSON.stringify(contacts, null, 2));
+const Contact = model("contacts", contactSchema);
 
-const addContact = async (body) => {
-  try {
-    const contacts = await getContactsList();
-    const newContact = { id: nanoid(), ...body };
-    contacts.push(newContact);
-    await updateContacts(contacts);
-    return newContact;
-  } catch (error) {
-    console.log(error);
-  }
-};
+contactSchema.post("save", handleMongooseError);
 
-const getContactById = async (contactId) => {
-  try {
-    const contacts = await getContactsList();
-    const result = contacts.find((contact) => contact.id === contactId);
-    return result || null;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const removeContactById = async (contactId) => {
-  try {
-    const contacts = await getContactsList();
-    const index = contacts.findIndex((contact) => contact.id === contactId);
-    if (index === -1) return null;
-    const [result] = contacts.splice(index, 1);
-    await updateContacts(contacts);
-    return result || null;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const updateContactById = async (id, data) => {
-  try {
-    const contacts = await getContactsList();
-    const index = contacts.findIndex((contact) => contact.id === id);
-
-    if (index === -1) return null;
-
-    contacts[index] = { ...contacts[index], ...data };
-    await updateContacts(contacts);
-    return contacts[index];
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-module.exports = {
-  addContact,
-  getContactById,
-  getContactsList,
-  updateContacts,
-  removeContactById,
-  updateContactById,
-};
+module.exports = Contact;
