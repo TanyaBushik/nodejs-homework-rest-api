@@ -1,19 +1,19 @@
 const express = require("express");
 
-const { isValidId } = require("../../middleware/isValidId");
+const { isValidId, authenticate } = require("../../middleware");
 const { addSchema, updateSchema } = require("../../schemas/contactsSchema");
 const ctrl = require("../../controllers/contacts");
 
 const router = express.Router();
 
-router.get("/", ctrl.getList);
+router.get("/", authenticate, ctrl.getList);
 
-router.get("/:id", ctrl.getById);
+router.get("/:id", authenticate, ctrl.getById);
 
-router.post("/", isValidId(addSchema), ctrl.add);
+router.post("/", authenticate, isValidId(addSchema), ctrl.add);
 
-router.delete("/:id", ctrl.removeById);
+router.delete("/:id", authenticate, ctrl.removeById);
 
-router.put("/:id", isValidId(updateSchema), ctrl.updateById);
+router.put("/:id", authenticate, isValidId(updateSchema), ctrl.updateById);
 
 module.exports = router;
