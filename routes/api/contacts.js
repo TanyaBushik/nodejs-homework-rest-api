@@ -16,6 +16,6 @@ router.patch("/:id/favorite", authenticate, isValidId, ctrl.updateFavorite);
 
 router.put("/:id", authenticate, isValidId, ctrl.updateById);
 
-router.delete("/:id", authenticate, ctrl.removeById);
+router.delete("/:id", authenticate, isValidId, ctrl.removeById);
 
 module.exports = router;
